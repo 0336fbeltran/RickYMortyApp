@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/btnLocalizacion"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="531dp"
+        android:layout_height="959dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/fondo" />
+
+    <ImageView
+        android:id="@+id/rickMortyImage"
+        android:layout_width="330dp"
+        android:layout_height="135dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.144"
+        app:srcCompat="@drawable/titulo" />
+
+    <Button
+        android:id="@+id/btnDead"
+        android:layout_width="175dp"
+        android:layout_height="62dp"
+        android:backgroundTint="#8BC34A"
+        android:fontFamily="@font/aldrich"
+        android:text="BUSCAR LOCALIZACIÓN"
+        android:textColor="#FFFFFF"
+        app:iconTint="#403232"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.641" />
+
+    <Button
+        android:id="@+id/btnPj"
+        android:layout_width="175dp"
+        android:layout_height="62dp"
+        android:backgroundTint="#8BC34A"
+        android:fontFamily="@font/aldrich"
+        android:text="BUSCAR PERSONAJE"
+        android:textColor="#FFFFFF"
+        app:iconTint="#403232"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.532" />
+
+    <Button
+        android:id="@+id/btnAlive"
+        android:layout_width="175dp"
+        android:layout_height="62dp"
+        android:backgroundTint="#8BC34A"
+        android:fontFamily="@font/aldrich"
+        android:text="BUSCAR EPISODIO"
+        android:textColor="#FFFFFF"
+        app:iconTint="#403232"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.745" />
+
+    <Button
+        android:id="@+id/btnJuego"
+        android:layout_width="198dp"
+        android:layout_height="88dp"
+        android:backgroundTint="#BA3232"
+        android:fontFamily="@font/aldrich"
+        android:text="DEAD OR ALIVE"
+        android:textColor="#FFFFFF"
+        app:iconTint="#403232"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.891" />
+
+    <EditText
+        android:id="@+id/buscador"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Nombre..."
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        android:textColor="#8BC34A"
+        android:textColorHighlight="#009688"
+        android:textColorHint="#8A8BC34A"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.396" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

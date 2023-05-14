@@ -28,6 +28,6 @@ public interface ServicioApi {
     @GET("episode/?")
     Call<Resultados3> getPostEp(@Query("name") String busqueda);
 
-    @GET("character/[x]")
-    Call<Resultados> getChar(@Query("id") int x);   //@Path("x") String x);
+    @GET("character/{id}")
+    Call<Character> getChar(@Path("id") int id);            //@Query("id") String x);   //@Path("id") int id
 }

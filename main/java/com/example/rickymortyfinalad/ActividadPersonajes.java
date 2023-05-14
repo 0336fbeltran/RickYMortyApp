@@ -1,6 +1,5 @@
 package com.example.rickymortyfinalad;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,8 +18,12 @@ public class ActividadPersonajes extends AppCompatActivity {
     private RecyclerView.LayoutManager layoutManager;
     private MiAdaptador adaptador;
 
+
     ArrayList<String> nombres;
-    ArrayList<String> especie;
+    ArrayList<String> especies;
+    ArrayList<String> tipos;
+    ArrayList<String> generos;
+    ArrayList<String> estados;
     ArrayList<String> fotos;
     String busqueda;
 
@@ -31,10 +34,13 @@ public class ActividadPersonajes extends AppCompatActivity {
         reciclador = findViewById(R.id.reciclador);
 
         nombres = new ArrayList<>();
-        especie = new ArrayList<>();
+        especies = new ArrayList<>();
+        tipos = new ArrayList<>();
+        generos = new ArrayList<>();
+        estados = new ArrayList<>();
         fotos = new ArrayList<>();
 
-        adaptador= new MiAdaptador(nombres, especie, fotos, this);
+        adaptador = new MiAdaptador(nombres, especies, tipos, generos, estados, fotos, this);
         reciclador.setHasFixedSize(true);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -43,19 +49,18 @@ public class ActividadPersonajes extends AppCompatActivity {
 
         reciclador.setAdapter(adaptador);
 
-       Bundle extras = getIntent().getExtras();
-       if(extras == null) {
+        Bundle extras = getIntent().getExtras();
+
+        if(extras == null) {
             Toast.makeText(this, "No hay búsqueda", Toast.LENGTH_LONG).show();
-       } else {
+        } else {
             busqueda = extras.getString(Intent.EXTRA_TEXT);
             if (busqueda == ""){
                 getTodos();
             } else {
                 getPosts();
             }
-
        }
-
     }
 
     private void getPosts() {
@@ -75,7 +80,10 @@ public class ActividadPersonajes extends AppCompatActivity {
                     ArrayList<Character> listaPersonajes = resultados.getResults();
                     for (int i = 0; i < listaPersonajes.size(); i++){
                         nombres.add(resultados.getResults().get(i).getName());
-                        especie.add(resultados.getResults().get(i).getSpecies());
+                        especies.add(resultados.getResults().get(i).getSpecies());
+                        tipos.add(resultados.getResults().get(i).getType());
+                        generos.add(resultados.getResults().get(i).getGender());
+                        estados.add(resultados.getResults().get(i).getStatus());
                         fotos.add(resultados.getResults().get(i).getImage());
                     }
                     adaptador.notifyDataSetChanged();
@@ -107,7 +115,10 @@ public class ActividadPersonajes extends AppCompatActivity {
                     ArrayList<Character> listaPersonajes = resultados.getResults();
                     for (int i = 0; i < listaPersonajes.size(); i++){
                         nombres.add(resultados.getResults().get(i).getName());
-                        especie.add(resultados.getResults().get(i).getSpecies());
+                        especies.add(resultados.getResults().get(i).getSpecies());
+                        tipos.add(resultados.getResults().get(i).getType());
+                        generos.add(resultados.getResults().get(i).getGender());
+                        estados.add(resultados.getResults().get(i).getStatus());
                         fotos.add(resultados.getResults().get(i).getImage());
 
                     }
@@ -119,7 +130,6 @@ public class ActividadPersonajes extends AppCompatActivity {
             public void onFailure(Call<Resultados> call, Throwable t) {
                 Toast.makeText(ActividadPersonajes.this, "Fallo cargando nombres", Toast.LENGTH_SHORT).show();
             }
-
         });
     }
 }

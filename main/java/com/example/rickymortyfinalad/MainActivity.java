@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         EditText buscador = findViewById(R.id.buscador);
         Button btnPj = findViewById(R.id.btnPj);
         Button btnLoc = findViewById(R.id.btnDead);

@@ -1,11 +1,14 @@
 package com.example.rickymortyfinalad;
 
+import static android.os.Bundle.EMPTY;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.GetChars;
+import android.os.CountDownTimer;
+import android.os.Parcelable;
 import android.view.View;
-import android.widget.Adapter;
+import android.view.ViewManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -15,19 +18,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentContainerView;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.transition.Transition;
 
-import java.io.IOException;
-import java.sql.Array;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -43,77 +44,178 @@ public class ActividadJuego extends AppCompatActivity {
     Button btnAlive;
     Button btnUnknown;
     ImageButton btnBack;
-    Context context;
     FragmentContainerView fragmentContainerView;
-    ArrayList<String> nombre;
-    ArrayList<String> foto;
-    ArrayList<String> status;
-    ListView list;
-    ArrayAdapter adapter;
-
+    String nombre;
+    String foto;
+    String status;
+    TextView seconds;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_actividad_juego);
 
-        nombre = new ArrayList<>();
-        foto = new ArrayList<>();
-        status = new ArrayList<>();
-        fragmentContainerView = findViewById(R.id.fragmentContainerView);
-        imageView = findViewById(R.id.charImage);           // Comprobar si view
+        nombre = "";
+        foto = "";
+        status = "";
+        //fragmentContainerView = findViewById(R.id.fragmentContainerView);
+        imageView = findViewById(R.id.charImage);
         textView = findViewById(R.id.textName);
         btnDead = findViewById(R.id.btnDead);
         btnAlive = findViewById(R.id.btnAlive);
         btnUnknown = findViewById(R.id.btnUnknown);
         btnBack = findViewById(R.id.btnBack);
-
+        seconds = findViewById(R.id.textSeconds);
         getChar();
 
+        Context ctx = this;
 
+        Bundle extras = getIntent().getExtras();
+
+        if (extras == null){
+            new CountDownTimer(30000, 1000) {
+
+                public void onTick(long millisUntilFinished) {
+                    seconds.setText("" + millisUntilFinished / 1000);
+                }
+
+                public void onFinish() {
+
+                    seconds.setText("Done!");
+                    Intent i = new Intent(ActividadJuego.this, FinishScreen.class);
+                    startActivity(i);
+                    finish();
+                    cancel();
+                }
+            }.start();
+
+        } else {
+            String segundos = extras.getString("CONTADOR");
+            seconds.setText(segundos);
+            int number = Integer.parseInt(segundos);
+
+            new CountDownTimer(number * 1000, 1000) {
+
+                public void onTick(long millisUntilFinished) {
+                    seconds.setText("" + millisUntilFinished / 1000);
+                }
+
+                public void onFinish() {
+
+                    seconds.setText("Done!");
+                    Intent i = new Intent(ActividadJuego.this, FinishScreen.class);
+                    startActivity(i);
+                    finish();
+                    cancel();
+                }
+            }.start();
+        }
+
+
+
+
+
+        btnAlive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (status.equals("Alive")){
+                    Usuario.PUNTOS++;
+                    Toast.makeText(ActividadJuego.this, "CORRECTO | Sus puntos: " + Usuario.PUNTOS, Toast.LENGTH_SHORT).show();
+                    Intent i = new Intent(ActividadJuego.this, ActividadJuego.class);
+                    Bundle extras = new Bundle();
+                    extras.putInt("PUNTOS", Usuario.PUNTOS);
+                    extras.putString("CONTADOR", seconds.getText().toString());
+                    i.putExtras(extras);
+                    startActivity(i);
+                } else {
+                    Toast.makeText(ActividadJuego.this, "No es así", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        btnDead.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (status.equals("Dead")){
+                    Usuario.PUNTOS++;
+                    Toast.makeText(ActividadJuego.this, "CORRECTO | Sus puntos: " + Usuario.PUNTOS, Toast.LENGTH_SHORT).show();
+                    Intent i = new Intent(ActividadJuego.this, ActividadJuego.class);
+                    Bundle extras = new Bundle();
+                    extras.putInt("PUNTOS", Usuario.PUNTOS);
+                    extras.putString("CONTADOR", seconds.getText().toString());
+                    i.putExtras(extras);
+                    startActivity(i);
+                } else {
+                    Toast.makeText(ActividadJuego.this, "No es así", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        btnUnknown.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (status.equals("unknown")){
+                    Usuario.PUNTOS++;
+                    Toast.makeText(ActividadJuego.this, "CORRECTO | Sus puntos: " + Usuario.PUNTOS, Toast.LENGTH_SHORT).show();
+                    Intent i = new Intent(ActividadJuego.this, ActividadJuego.class);
+                    Bundle extras = new Bundle();
+                    extras.putInt("PUNTOS", Usuario.PUNTOS);
+                    extras.putString("CONTADOR", seconds.getText().toString());
+                    i.putExtras(extras);
+                    startActivity(i);
+                } else {
+                    Toast.makeText(ActividadJuego.this, "No es así", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(ActividadJuego.this, MainActivity.class);
+                startActivity(i);
+            }
+        });
     }
 
     private void getChar() {
-
+        Context ctx = this;
         final int min = 1;
         final int max = 826;
-        final int y = new Random().nextInt((max - min) + 1) + min;
-        final String x = String.valueOf(y);
+        final int id = new Random().nextInt((max - min) + 1) + min;
+        final String x = String.valueOf(id);
 
         Retrofit retrofit = new Retrofit.Builder().baseUrl("https://rickandmortyapi.com/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
         ServicioApi servicioApi = retrofit.create(ServicioApi.class);
-        Call<Resultados> call = servicioApi.getChar(y);
+        Call<Character> call = servicioApi.getChar(id);
 
-        call.enqueue(new Callback<Resultados>() {
+        call.enqueue(new Callback<Character>() {
             @Override
-            public void onResponse(Call<Resultados> call, Response<Resultados> response) {
+            public void onResponse(Call<Character> call, Response<Character> response) {
                 if (response.body() != null) {
-                    Resultados resultados = response.body();
-                    ArrayList<Character> personaje = resultados.getResults();
-                    for (int i = 0; i <= personaje.size(); i++){
-                        nombre.add(resultados.getResults().get(i).getName());
-                        foto.add(resultados.getResults().get(i).getImage());
-                        status.add(resultados.getResults().get(i).getStatus());
-                    }
-                    textView.setText(nombre.get(0));
+
+                    Character personaje = response.body();
+                    nombre = personaje.getName();
+                    status = personaje.getStatus();
+                    foto = personaje.getImage();
+                    //sumar 1 al id
+                    textView.setText(nombre);
 
                     /*RequestOptions options = new RequestOptions().centerCrop()
                             .placeholder(R.mipmap.ic_launcher_round)
-                            .error(R.mipmap.ic_launcher_round);
-                    Glide.with(fragmentContainerView).load(foto).transform(new CircleCrop()).into(imageView);*/
+                            .error(R.mipmap.ic_launcher_round);*/
+                    //Glide.with(ctx).load(foto).into(imageView);
                     //adapter.notifyDataSetChanged();
                 }
             }
 
             @Override
-            public void onFailure(Call<Resultados> call, Throwable t) {
+            public void onFailure(Call<Character> call, Throwable t) {
                 Toast.makeText(ActividadJuego.this, "Fallo cargando personaje", Toast.LENGTH_SHORT).show();
             }
 
         });
     }
-
-
 }

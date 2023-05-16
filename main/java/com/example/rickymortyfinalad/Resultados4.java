@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 public class Resultados4 {
 
+    Info info;
+
     Character results;
 
     public Character getResults() {
@@ -12,5 +14,13 @@ public class Resultados4 {
 
     public void setResults(Character results) {
         this.results = results;
+    }
+
+    public Info getInfo() {
+        return info;
+    }
+
+    public void setInfo(Info info) {
+        this.info = info;
     }
 }

@@ -5,6 +5,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.Toast;
 import java.util.ArrayList;
 import retrofit2.Call;
@@ -17,8 +19,8 @@ public class ActividadPersonajes extends AppCompatActivity {
     private RecyclerView reciclador;
     private RecyclerView.LayoutManager layoutManager;
     private MiAdaptador adaptador;
-
-
+    private int pagina;
+    ImageButton btnPrev, btnNext;
     ArrayList<String> nombres;
     ArrayList<String> especies;
     ArrayList<String> tipos;
@@ -32,7 +34,10 @@ public class ActividadPersonajes extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_actividad_personajes);
         reciclador = findViewById(R.id.reciclador);
+        btnPrev = findViewById(R.id.btnPrev);
+        btnNext = findViewById(R.id.btnNext);
 
+        pagina = 1;
         nombres = new ArrayList<>();
         especies = new ArrayList<>();
         tipos = new ArrayList<>();
@@ -60,7 +65,22 @@ public class ActividadPersonajes extends AppCompatActivity {
             } else {
                 getPosts();
             }
-       }
+
+            btnPrev.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    pagina--;
+                    adaptador.actualizarDatos();
+                }
+            });
+            btnNext.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    pagina++;
+                    adaptador.actualizarDatos();
+                }
+            });
+        }
     }
 
     private void getPosts() {
@@ -86,7 +106,7 @@ public class ActividadPersonajes extends AppCompatActivity {
                         estados.add(resultados.getResults().get(i).getStatus());
                         fotos.add(resultados.getResults().get(i).getImage());
                     }
-                    adaptador.notifyDataSetChanged();
+                    adaptador.actualizarDatos();
                 }
             }
 
@@ -105,7 +125,7 @@ public class ActividadPersonajes extends AppCompatActivity {
                 .build();
 
         ServicioApi servicioApi = retrofit.create(ServicioApi.class);
-        Call<Resultados> call = servicioApi.getTodos();
+        Call<Resultados> call = servicioApi.getTodos(pagina);
 
         call.enqueue(new Callback<Resultados>() {
             @Override
@@ -113,7 +133,7 @@ public class ActividadPersonajes extends AppCompatActivity {
                 if (response.body() != null) {
                     Resultados resultados = response.body();
                     ArrayList<Character> listaPersonajes = resultados.getResults();
-                    for (int i = 0; i < listaPersonajes.size(); i++){
+                    for (int i = 0; i < listaPersonajes.size(); i++) {
                         nombres.add(resultados.getResults().get(i).getName());
                         especies.add(resultados.getResults().get(i).getSpecies());
                         tipos.add(resultados.getResults().get(i).getType());
@@ -122,7 +142,7 @@ public class ActividadPersonajes extends AppCompatActivity {
                         fotos.add(resultados.getResults().get(i).getImage());
 
                     }
-                    adaptador.notifyDataSetChanged();
+                    adaptador.actualizarDatos();
                 }
             }
 

@@ -14,7 +14,7 @@ public interface ServicioApi {
     Call<Resultados> getPost(@Query("name") String busqueda);
 
     @GET("character")
-    Call<Resultados> getTodos();
+    Call<Resultados> getTodos(@Query("page") int pagina);
 
     @GET("location")
     Call<Resultados2> getTodas();

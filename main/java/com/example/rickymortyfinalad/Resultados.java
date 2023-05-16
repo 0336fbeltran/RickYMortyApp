@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 public class Resultados {
 
+    Info info;
+
     ArrayList<Character> results;
 
     public ArrayList<Character> getResults() {
@@ -14,7 +16,13 @@ public class Resultados {
         this.results = results;
     }
 
+    public Info getInfo() {
+        return info;
+    }
 
+    public void setInfo(Info info) {
+        this.info = info;
+    }
 
 
 }

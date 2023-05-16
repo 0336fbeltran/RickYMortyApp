@@ -23,22 +23,22 @@ import java.util.ArrayList;
 
 public class MiAdaptador extends
         RecyclerView.Adapter<MiAdaptador.MyViewHolder> {
-    private static ArrayList<String> nombres;
-    private static ArrayList<String> especies;
-    private static ArrayList<String> tipos;
-    private static ArrayList<String> generos;
-    private static ArrayList<String> estados;
-    private static ArrayList<String> fotos;
-    private static Context context;
+    private ArrayList<String> nombres;
+    private ArrayList<String> especies;
+    private ArrayList<String> tipos;
+    private ArrayList<String> generos;
+    private ArrayList<String> estados;
+    private ArrayList<String> fotos;
+    private Context context;
 
     public MiAdaptador(ArrayList<String> nombres, ArrayList<String> especies, ArrayList<String> tipos, ArrayList<String> generos, ArrayList<String> estados, ArrayList<String> fotos, Context context) {
-        MiAdaptador.nombres = nombres;
-        MiAdaptador.especies = especies;
-        MiAdaptador.tipos = tipos;
-        MiAdaptador.generos = generos;
-        MiAdaptador.estados = estados;
-        MiAdaptador.fotos = fotos;
-        MiAdaptador.context = context;
+        this.nombres = nombres;
+        this.especies = especies;
+        this.tipos = tipos;
+        this.generos = generos;
+        this.estados = estados;
+        this.fotos = fotos;
+        this.context = context;
     }
 
     @NonNull
@@ -64,12 +64,15 @@ public class MiAdaptador extends
         return (nombres != null) ? nombres.size() : 0;
     }
 
+    public void actualizarDatos() {
+        this.notifyDataSetChanged();
+    }
 
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder{
+    public class MyViewHolder extends RecyclerView.ViewHolder{
         public TextView titulo, subtitulo, textNombre, textSpecies, textType, textGender, textStatus;
         public ImageView icon, icon2;
-        public static int globalPosition;
+        public int globalPosition;
         public Group marco;
 
         public MyViewHolder(@NonNull View v) {

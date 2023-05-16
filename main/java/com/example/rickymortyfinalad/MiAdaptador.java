@@ -19,10 +19,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class MiAdaptador extends
         RecyclerView.Adapter<MiAdaptador.MyViewHolder> {
+    private ArrayList<Character> listaPersonajes;
     private ArrayList<String> nombres;
     private ArrayList<String> especies;
     private ArrayList<String> tipos;
@@ -41,6 +43,11 @@ public class MiAdaptador extends
         this.context = context;
     }
 
+    public MiAdaptador(ArrayList<Character> listaPersonajes, Context context){
+        this.listaPersonajes = listaPersonajes;
+        this.context = context;
+    }
+
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -51,23 +58,43 @@ public class MiAdaptador extends
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         //VHolder2 vHolder2 = new VHolder2(context);
-        holder.titulo.setText(nombres.get(position));
+        holder.titulo.setText(listaPersonajes.get(position).getName());
         //holder.subtitulo.setText(especies.get(position));
         RequestOptions options = new RequestOptions().centerCrop()
                 .placeholder(R.mipmap.ic_launcher_round)
                 .error(R.mipmap.ic_launcher_round);
-        Glide.with(context).load(fotos.get(position)).apply(options).into(holder.icon);
+        Glide.with(context).load(listaPersonajes.get(position).getImage()).apply(options).into(holder.icon);
     }
 
     @Override
     public int getItemCount() {
-        return (nombres != null) ? nombres.size() : 0;
+        return (listaPersonajes != null) ? listaPersonajes.size() : 0;
     }
 
-    public void actualizarDatos() {
-        this.notifyDataSetChanged();
-    }
+    /*
+    public void actualizarDatos(ArrayList<String> nombres2, ArrayList<String> especies2, ArrayList<String> tipos2, ArrayList<String> generos2, ArrayList<String> estados2, ArrayList<String> fotos2) {
+        nombres.clear();
+        especies.clear();
+        tipos.clear();
+        generos.clear();
+        estados.clear();
+        fotos.clear();
 
+        nombres.addAll(nombres2);
+        especies.addAll(especies2);
+        tipos.addAll(tipos2);
+        generos.addAll(generos2);
+        estados.addAll(estados2);
+        fotos.addAll(fotos2);
+
+        notifyDataSetChanged();
+    }
+*/
+
+    public void actualizarDatos(ArrayList<Character> listaPersonajes2){
+        listaPersonajes = listaPersonajes2;
+        notifyDataSetChanged();
+    }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
         public TextView titulo, subtitulo, textNombre, textSpecies, textType, textGender, textStatus;
@@ -100,15 +127,17 @@ public class MiAdaptador extends
                     icon2 = dialog.findViewById(R.id.foto);
                     dialog.show();
 
-                    textNombre.setText(nombres.get(globalPosition));
-                    textSpecies.setText(especies.get(globalPosition));
-                    textType.setText(tipos.get(globalPosition));
-                    textGender.setText(generos.get(globalPosition));
-                    textStatus.setText(estados.get(globalPosition));
+                    //textStatus.setText(estados.get(globalPosition));
+                    textNombre.setText(listaPersonajes.get(globalPosition).getName());
+                    textSpecies.setText(listaPersonajes.get(globalPosition).getSpecies());
+                    textType.setText(listaPersonajes.get(globalPosition).getType());
+                    textGender.setText(listaPersonajes.get(globalPosition).getGender());
+
+                    textStatus.setText(listaPersonajes.get(globalPosition).getStatus());
                     RequestOptions options = new RequestOptions().centerCrop()
                             .placeholder(R.mipmap.ic_launcher_round)
                             .error(R.mipmap.ic_launcher_round);
-                    Glide.with(context).load(fotos.get(globalPosition)).apply(options).into(icon2);
+                    Glide.with(context).load(listaPersonajes.get(globalPosition).getImage()).apply(options).into(icon2);
 
 
                     ImageButton dialogBtn_cancelar = dialog.findViewById(R.id.botonCerrar);

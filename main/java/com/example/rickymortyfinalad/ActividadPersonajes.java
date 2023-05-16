@@ -21,6 +21,7 @@ public class ActividadPersonajes extends AppCompatActivity {
     private MiAdaptador adaptador;
     private int pagina;
     ImageButton btnPrev, btnNext;
+    ArrayList<Character> listaPersonajes;
     ArrayList<String> nombres;
     ArrayList<String> especies;
     ArrayList<String> tipos;
@@ -38,14 +39,15 @@ public class ActividadPersonajes extends AppCompatActivity {
         btnNext = findViewById(R.id.btnNext);
 
         pagina = 1;
-        nombres = new ArrayList<>();
+        listaPersonajes = new ArrayList<>();
+       /* nombres = new ArrayList<>();
         especies = new ArrayList<>();
         tipos = new ArrayList<>();
         generos = new ArrayList<>();
         estados = new ArrayList<>();
         fotos = new ArrayList<>();
-
-        adaptador = new MiAdaptador(nombres, especies, tipos, generos, estados, fotos, this);
+*/
+        adaptador = new MiAdaptador(listaPersonajes, this);
         reciclador.setHasFixedSize(true);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -70,14 +72,22 @@ public class ActividadPersonajes extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     pagina--;
-                    adaptador.actualizarDatos();
+                    if (busqueda == ""){
+                        getTodos();
+                    } else {
+                        getPosts();
+                    }
                 }
             });
             btnNext.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     pagina++;
-                    adaptador.actualizarDatos();
+                    if (busqueda == ""){
+                        getTodos();
+                    } else {
+                        getPosts();
+                    }
                 }
             });
         }
@@ -90,7 +100,7 @@ public class ActividadPersonajes extends AppCompatActivity {
                 .build();
 
         ServicioApi servicioApi = retrofit.create(ServicioApi.class);
-        Call<Resultados> call = servicioApi.getPost(busqueda);
+        Call<Resultados> call = servicioApi.getPost(busqueda, pagina);
 
         call.enqueue(new Callback<Resultados>() {
             @Override
@@ -98,15 +108,15 @@ public class ActividadPersonajes extends AppCompatActivity {
                 if (response.body() != null) {
                     Resultados resultados = response.body();
                     ArrayList<Character> listaPersonajes = resultados.getResults();
-                    for (int i = 0; i < listaPersonajes.size(); i++){
+                    /*for (int i = 0; i < listaPersonajes.size(); i++){
                         nombres.add(resultados.getResults().get(i).getName());
                         especies.add(resultados.getResults().get(i).getSpecies());
                         tipos.add(resultados.getResults().get(i).getType());
                         generos.add(resultados.getResults().get(i).getGender());
                         estados.add(resultados.getResults().get(i).getStatus());
                         fotos.add(resultados.getResults().get(i).getImage());
-                    }
-                    adaptador.actualizarDatos();
+                    }*/
+                    adaptador.actualizarDatos(listaPersonajes);
                 }
             }
 
@@ -133,6 +143,7 @@ public class ActividadPersonajes extends AppCompatActivity {
                 if (response.body() != null) {
                     Resultados resultados = response.body();
                     ArrayList<Character> listaPersonajes = resultados.getResults();
+                    /*
                     for (int i = 0; i < listaPersonajes.size(); i++) {
                         nombres.add(resultados.getResults().get(i).getName());
                         especies.add(resultados.getResults().get(i).getSpecies());
@@ -141,8 +152,9 @@ public class ActividadPersonajes extends AppCompatActivity {
                         estados.add(resultados.getResults().get(i).getStatus());
                         fotos.add(resultados.getResults().get(i).getImage());
 
-                    }
-                    adaptador.actualizarDatos();
+                    }*/
+
+                    adaptador.actualizarDatos(listaPersonajes);
                 }
             }
 

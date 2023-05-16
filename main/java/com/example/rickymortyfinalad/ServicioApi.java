@@ -11,10 +11,12 @@ import retrofit2.http.Query;
 public interface ServicioApi {
 
     @GET("character/?")
-    Call<Resultados> getPost(@Query("name") String busqueda);
+    Call<Resultados> getPost(@Query("name") String busqueda, @Query("page") int pagina);
 
-    @GET("character")
+    @GET("character/")
     Call<Resultados> getTodos(@Query("page") int pagina);
+
+
 
     @GET("location")
     Call<Resultados2> getTodas();

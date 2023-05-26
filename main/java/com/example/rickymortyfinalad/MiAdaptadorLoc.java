@@ -21,44 +21,42 @@ import com.bumptech.glide.request.RequestOptions;
 import java.util.ArrayList;
 
 public class MiAdaptadorLoc extends RecyclerView.Adapter<MiAdaptadorLoc.MyViewHolder> {
-    private final ArrayList<String> nombresLoc;
-    private final ArrayList<String> tipos;
-    private final ArrayList<String> dimensiones;
+    private ArrayList<Location> listaLocalizaciones;
     private final Context context;
 
-    public MiAdaptadorLoc(ArrayList<String> nombresLoc, ArrayList<String> tipos, ArrayList<String> dimensiones, Context context) {
-        this.nombresLoc = nombresLoc;
-        this.tipos = tipos;
-        this.dimensiones = dimensiones;
+    public MiAdaptadorLoc(ArrayList<Location> listaLocalizaciones, Context context) {
+        this.listaLocalizaciones = listaLocalizaciones;
         this.context = context;
     }
+
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.elemento2_layout, parent, false);
         return new MiAdaptadorLoc.MyViewHolder(v);
     }
+
     @Override
     public void onBindViewHolder(MiAdaptadorLoc.MyViewHolder holder, int position) {
-        holder.titulo2.setText(nombresLoc.get(position));
-        //holder.subtitulo2.setText(tipos.get(position));
-        //holder.subtitulo3.setText(dimensiones.get(position));
-
+        holder.titulo2.setText(listaLocalizaciones.get(position).getName());
     }
+
     @Override
     public int getItemCount() {
-        return (nombresLoc != null) ? nombresLoc.size() : 0;
+        return (listaLocalizaciones != null) ? listaLocalizaciones.size() : 0;
+    }
+
+    public void actualizarDatos(ArrayList<Location> localizaciones) {
+        listaLocalizaciones = localizaciones;
+        notifyDataSetChanged();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView titulo2, subtitulo2, subtitulo3, textNombreLoc, textTypeLoc, textDimension;
-        public ImageView icon;
+        public TextView titulo2, textNombreLoc, textTypeLoc, textDimension;
         public int globalPosition;
         public MyViewHolder(@NonNull View v) {
             super(v);
             titulo2 = v.findViewById(R.id.titulo2);
-            //subtitulo2 = v.findViewById(R.id.subtitulo2);
-            //subtitulo3 = v.findViewById(R.id.subtitulo3);
 
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -76,9 +74,9 @@ public class MiAdaptadorLoc extends RecyclerView.Adapter<MiAdaptadorLoc.MyViewHo
                     textDimension = dialog.findViewById(R.id.txtDimension);
                     dialog.show();
 
-                    textNombreLoc.setText(nombresLoc.get(globalPosition));
-                    textTypeLoc.setText(tipos.get(globalPosition));
-                    textDimension.setText(dimensiones.get(globalPosition));
+                    textNombreLoc.setText(listaLocalizaciones.get(globalPosition).getName());
+                    textTypeLoc.setText(listaLocalizaciones.get(globalPosition).getType());
+                    textDimension.setText(listaLocalizaciones.get(globalPosition).getDimension());
 
                     ImageButton dialogBtn_cancelar = dialog.findViewById(R.id.botonCerrar2);
                     dialogBtn_cancelar.setOnClickListener(new View.OnClickListener() {

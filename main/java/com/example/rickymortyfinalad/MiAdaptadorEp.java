@@ -20,16 +20,12 @@ import com.bumptech.glide.request.RequestOptions;
 import java.util.ArrayList;
 
 public class MiAdaptadorEp extends RecyclerView.Adapter<MiAdaptadorEp.MyViewHolder> {
-    private final ArrayList<String> nombresEp;
-    private final ArrayList<String> fechaAire;
-    private final ArrayList<String> codigoEp;
+    private ArrayList<Episode> listaEpisodios;
     private final Context context;
 
 
-    public MiAdaptadorEp(ArrayList<String> nombresEp, ArrayList<String> fechaAire, ArrayList<String> codigoEp, Context context) {
-        this.nombresEp = nombresEp;
-        this.fechaAire = fechaAire;
-        this.codigoEp = codigoEp;
+    public MiAdaptadorEp(ArrayList<Episode> listaEpisodios, Context context) {
+       this.listaEpisodios = listaEpisodios;
         this.context = context;
     }
 
@@ -42,12 +38,17 @@ public class MiAdaptadorEp extends RecyclerView.Adapter<MiAdaptadorEp.MyViewHold
 
     @Override
     public void onBindViewHolder(MiAdaptadorEp.MyViewHolder holder, int position) {
-        holder.titulo3.setText(codigoEp.get(position));
+        holder.titulo3.setText(listaEpisodios.get(position).getName());
     }
 
     @Override
     public int getItemCount() {
-        return (nombresEp != null) ? nombresEp.size() : 0;
+        return (listaEpisodios != null) ? listaEpisodios.size() : 0;
+    }
+
+    public void actualizarDatos(ArrayList<Episode> episodios) {
+        listaEpisodios = episodios;
+        notifyDataSetChanged();
     }
 
 
@@ -75,9 +76,9 @@ public class MiAdaptadorEp extends RecyclerView.Adapter<MiAdaptadorEp.MyViewHold
 
                     dialog.show();
 
-                    textNombre.setText(nombresEp.get(globalPosition));
-                    textCode.setText(codigoEp.get(globalPosition));
-                    textDate.setText(fechaAire.get(globalPosition));
+                    textNombre.setText(listaEpisodios.get(globalPosition).getName());
+                    textCode.setText(listaEpisodios.get(globalPosition).getEpisode());
+                    textDate.setText(listaEpisodios.get(globalPosition).getAir_date());
 
                     ImageButton dialogBtn_cancelar = dialog.findViewById(R.id.botonCerrar3);
                     dialogBtn_cancelar.setOnClickListener(new View.OnClickListener() {

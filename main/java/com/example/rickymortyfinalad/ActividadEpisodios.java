@@ -6,6 +6,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -24,9 +26,10 @@ public class ActividadEpisodios extends AppCompatActivity {
     private RecyclerView.LayoutManager layoutManager;
     private MiAdaptadorEp adaptador3;
 
-    ArrayList<String> nombres;
-    ArrayList<String> fechasEp;
-    ArrayList<String> episodes;
+    private int pagina;
+    ImageButton btnPrev3, btnNext3;
+
+    ArrayList<Episode> episodios;
     String busqueda;
 
     @Override
@@ -35,11 +38,13 @@ public class ActividadEpisodios extends AppCompatActivity {
         setContentView(R.layout.activity_actividad_episodios);
         reciclador3 = findViewById(R.id.reciclador3);
 
-        nombres = new ArrayList<>();
-        fechasEp = new ArrayList<>();
-        episodes = new ArrayList<>();
+        btnPrev3 = findViewById(R.id.btnPrev3);
+        btnNext3 = findViewById(R.id.btnNext3);
+        pagina = 1;
 
-        adaptador3 = new MiAdaptadorEp(nombres, fechasEp, episodes, this);
+        episodios = new ArrayList<>();
+
+        adaptador3 = new MiAdaptadorEp(episodios, this);
         reciclador3.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
@@ -58,8 +63,30 @@ public class ActividadEpisodios extends AppCompatActivity {
                 getPostEp();
             }
 
-        }
+            btnPrev3.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    pagina--;
+                    if (busqueda == ""){
+                        getTodes();
+                    } else {
+                        getPostEp();
+                    }
+                }
+            });
 
+            btnNext3.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    pagina++;
+                    if (busqueda == "") {
+                        getTodes();
+                    } else {
+                        getPostEp();
+                    }
+                }
+            });
+        }
     }
 
     private void getPostEp() {
@@ -69,20 +96,15 @@ public class ActividadEpisodios extends AppCompatActivity {
                 .build();
 
         ServicioApi servicioApi = retrofit.create(ServicioApi.class);
-        Call<Resultados3> call = servicioApi.getPostEp(busqueda);
+        Call<Resultados3> call = servicioApi.getPostEp(busqueda, pagina);
 
         call.enqueue(new Callback<Resultados3>() {
             @Override
             public void onResponse(Call<Resultados3> call, Response<Resultados3> response) {
                 if (response.body() != null) {
                     Resultados3 resultados = response.body();
-                    ArrayList<Episode> listaEpisodios = resultados.getResults();
-                    for (int i = 0; i < listaEpisodios.size(); i++){
-                        nombres.add(resultados.getResults().get(i).getName());
-                        fechasEp.add(resultados.getResults().get(i).getAir_date());
-                        episodes.add(resultados.getResults().get(i).getEpisode());
-                    }
-                    adaptador3.notifyDataSetChanged();
+                    episodios = resultados.getResults();
+                    adaptador3.actualizarDatos(episodios);
                 }
             }
 
@@ -101,21 +123,15 @@ public class ActividadEpisodios extends AppCompatActivity {
                 .build();
 
         ServicioApi servicioApi = retrofit.create(ServicioApi.class);
-        Call<Resultados3> call = servicioApi.getTodes();
+        Call<Resultados3> call = servicioApi.getTodes(pagina);
 
         call.enqueue(new Callback<Resultados3>() {
             @Override
             public void onResponse(Call<Resultados3> call, Response<Resultados3> response) {
                 if (response.body() != null) {
                     Resultados3 resultados = response.body();
-                    ArrayList<Episode> listaEpisodios = resultados.getResults();
-                    for (int i = 0; i < listaEpisodios.size(); i++){
-                        nombres.add(resultados.getResults().get(i).getName());
-                        fechasEp.add(resultados.getResults().get(i).getAir_date());
-                        episodes.add(resultados.getResults().get(i).getEpisode());
-
-                    }
-                    adaptador3.notifyDataSetChanged();
+                    episodios = resultados.getResults();
+                    adaptador3.actualizarDatos(episodios);
                 }
             }
 

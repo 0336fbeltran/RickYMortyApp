@@ -55,16 +55,17 @@ public class FinishScreen extends AppCompatActivity {
         tvPuntosGenerales1 = findViewById(R.id.textPuntos3);
         tvPuntosGenerales2 = findViewById(R.id.textPuntos4);
         tvPuntosGenerales3 = findViewById(R.id.textPuntos5);
-        recyclerView = findViewById(R.id.recyclerView);
+        //recyclerView = findViewById(R.id.recyclerView);
 
         adaptadorPuntos = new AdaptadorPuntos(puntosGenerales, this);
-        recyclerView.setHasFixedSize(true);
+
+        //recyclerView.setHasFixedSize(true);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
-        recyclerView.setLayoutManager(linearLayoutManager);
+        //recyclerView.setLayoutManager(linearLayoutManager);
 
-        recyclerView.setAdapter(adaptadorPuntos);
+        //recyclerView.setAdapter(adaptadorPuntos);
 
         puntos = Usuario.PUNTOS;
         String s = Integer.toString(puntos);
@@ -174,6 +175,7 @@ public class FinishScreen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Usuario.PUNTOS = 0;
+                puntosGenerales.clear();
                 startActivity(new Intent(FinishScreen.this, MainActivity.class));
             }
         });

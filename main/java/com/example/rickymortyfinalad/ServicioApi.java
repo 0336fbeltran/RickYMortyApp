@@ -16,20 +16,18 @@ public interface ServicioApi {
     @GET("character/")
     Call<Resultados> getTodos(@Query("page") int pagina);
 
-
-
     @GET("location")
-    Call<Resultados2> getTodas();
+    Call<Resultados2> getTodas(@Query("page") int pagina);
 
     @GET("location/?")
-    Call<Resultados2> getPostLoc(@Query("name") String busqueda);
+    Call<Resultados2> getPostLoc(@Query("name") String busqueda, @Query("page") int pagina);
 
     @GET("episode")
-    Call<Resultados3> getTodes();
+    Call<Resultados3> getTodes(@Query("page") int pagina);
 
     @GET("episode/?")
-    Call<Resultados3> getPostEp(@Query("name") String busqueda);
+    Call<Resultados3> getPostEp(@Query("name") String busqueda, @Query("page") int pagina);
 
     @GET("character/{id}")
-    Call<Character> getChar(@Path("id") int id);            //@Query("id") String x);   //@Path("id") int id
+    Call<Character> getChar(@Path("id") int id);
 }

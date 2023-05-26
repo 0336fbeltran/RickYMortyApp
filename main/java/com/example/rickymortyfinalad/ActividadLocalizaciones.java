@@ -5,6 +5,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.Toast;
 import java.util.ArrayList;
 import retrofit2.Call;
@@ -15,12 +17,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ActividadLocalizaciones extends AppCompatActivity {
     private RecyclerView reciclador2;
-    private RecyclerView.LayoutManager layoutManager2;
     private MiAdaptadorLoc adaptador2;
 
-    ArrayList<String> nombresLoc;
-    ArrayList<String> tipos;
-    ArrayList<String> dimensiones;
+    private int pagina;
+    ImageButton btnPrev2, btnNext2;
+
+    ArrayList<Location> localizaciones;
     String busqueda;
 
     @Override
@@ -29,11 +31,13 @@ public class ActividadLocalizaciones extends AppCompatActivity {
         setContentView(R.layout.activity_actividad_localizaciones);
         reciclador2 = findViewById(R.id.reciclador2);
 
-        nombresLoc = new ArrayList<>();
-        tipos = new ArrayList<>();
-        dimensiones = new ArrayList<>();
+        btnPrev2 = findViewById(R.id.btnPrev2);
+        btnNext2 = findViewById(R.id.btnNext2);
+        pagina = 1;
 
-        adaptador2 = new MiAdaptadorLoc(nombresLoc, tipos, dimensiones, this);
+        localizaciones = new ArrayList<>();
+
+        adaptador2 = new MiAdaptadorLoc(localizaciones, this);
         reciclador2.setHasFixedSize(true);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -53,6 +57,29 @@ public class ActividadLocalizaciones extends AppCompatActivity {
                 getPostLoc();
             }
 
+            btnPrev2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    pagina--;
+                    if (busqueda == ""){
+                        getTodas();
+                    } else {
+                        getPostLoc();
+                    }
+                }
+            });
+
+            btnNext2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    pagina++;
+                    if (busqueda == "") {
+                        getTodas();
+                    } else {
+                        getPostLoc();
+                    }
+                }
+            });
         }
     }
 
@@ -63,20 +90,15 @@ public class ActividadLocalizaciones extends AppCompatActivity {
                 .build();
 
         ServicioApi servicioApi = retrofit.create(ServicioApi.class);
-        Call<Resultados2> call = servicioApi.getPostLoc(busqueda);
+        Call<Resultados2> call = servicioApi.getPostLoc(busqueda, pagina);
 
         call.enqueue(new Callback<Resultados2>() {
             @Override
             public void onResponse(Call<Resultados2> call, Response<Resultados2> response) {
                 if (response.body() != null) {
                     Resultados2 resultados = response.body();
-                    ArrayList<Location> listaLocalizaciones = resultados.getResults();
-                    for (int i = 0; i < listaLocalizaciones.size(); i++){
-                        nombresLoc.add(resultados.getResults().get(i).getName());
-                        tipos.add(resultados.getResults().get(i).getType());
-                        dimensiones.add(resultados.getResults().get(i).getDimension());
-                    }
-                    adaptador2.notifyDataSetChanged();
+                    localizaciones = resultados.getResults();
+                    adaptador2.actualizarDatos(localizaciones);
                 }
             }
 
@@ -95,21 +117,15 @@ public class ActividadLocalizaciones extends AppCompatActivity {
                 .build();
 
         ServicioApi servicioApi = retrofit.create(ServicioApi.class);
-        Call<Resultados2> call = servicioApi.getTodas();
+        Call<Resultados2> call = servicioApi.getTodas(pagina);
 
         call.enqueue(new Callback<Resultados2>() {
             @Override
             public void onResponse(Call<Resultados2> call, Response<Resultados2> response) {
                 if (response.body() != null) {
                     Resultados2 resultados = response.body();
-                    ArrayList<Location> listaLocalizaciones = resultados.getResults();
-                    for (int i = 0; i < listaLocalizaciones.size(); i++){
-                        nombresLoc.add(resultados.getResults().get(i).getName());
-                        tipos.add(resultados.getResults().get(i).getType());
-                        dimensiones.add(resultados.getResults().get(i).getDimension());
-
-                    }
-                    adaptador2.notifyDataSetChanged();
+                    localizaciones = resultados.getResults();
+                    adaptador2.actualizarDatos(localizaciones);
                 }
             }
 
@@ -117,7 +133,6 @@ public class ActividadLocalizaciones extends AppCompatActivity {
             public void onFailure(Call<Resultados2> call, Throwable t) {
                 Toast.makeText(ActividadLocalizaciones.this, "Fallo cargando localizaciones", Toast.LENGTH_SHORT).show();
             }
-
         });
     }
 }

@@ -127,7 +127,7 @@ public class ActividadJuego extends AppCompatActivity {
                     i.putExtras(extras);
                     startActivity(i);
                 } else {
-                    Toast.makeText(ActividadJuego.this, "No es así", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(ActividadJuego.this, "No es así", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -145,7 +145,7 @@ public class ActividadJuego extends AppCompatActivity {
                     i.putExtras(extras);
                     startActivity(i);
                 } else {
-                    Toast.makeText(ActividadJuego.this, "No es así", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(ActividadJuego.this, "No es así", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -163,7 +163,7 @@ public class ActividadJuego extends AppCompatActivity {
                     i.putExtras(extras);
                     startActivity(i);
                 } else {
-                    Toast.makeText(ActividadJuego.this, "No es así", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(ActividadJuego.this, "No es así", Toast.LENGTH_SHORT).show();
                 }
             }
         });

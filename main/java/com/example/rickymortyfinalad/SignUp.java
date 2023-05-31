@@ -47,9 +47,13 @@ public class SignUp extends AppCompatActivity {
 
                 if (mEmail.isEmpty()) {
                     Toast.makeText(SignUp.this, "Rellene el email", Toast.LENGTH_SHORT).show();
-                } else if (pass.isEmpty()){
+                } else if (!mEmail.contains("@")){
+                    Toast.makeText(SignUp.this, "Formato de email incorrecto", Toast.LENGTH_SHORT).show();
+                }else if (pass.isEmpty()){
                     Toast.makeText(SignUp.this, "Rellene la contraseña", Toast.LENGTH_SHORT).show();
-                } else if (pass2.isEmpty()){
+                } else if (pass.length() < 6){
+                    Toast.makeText(SignUp.this, "La contraseña debe tener 6 caracteres mínimo", Toast.LENGTH_SHORT).show();
+                }else if (pass2.isEmpty()){
                     Toast.makeText(SignUp.this, "Repita la contraseña", Toast.LENGTH_SHORT).show();
                 } else if (!pass.equals(pass2)){
                     Toast.makeText(SignUp.this, "Las contraseñas deben coincidir", Toast.LENGTH_SHORT).show();
@@ -80,7 +84,7 @@ public class SignUp extends AppCompatActivity {
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(Exception e) {
-                            Toast.makeText(SignUp.this, "Error generando usuario    ", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SignUp.this, "Error generando usuario", Toast.LENGTH_SHORT).show();
                         }
                     });
                 }

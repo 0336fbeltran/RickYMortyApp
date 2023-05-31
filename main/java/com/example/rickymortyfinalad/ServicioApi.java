@@ -1,8 +1,5 @@
 package com.example.rickymortyfinalad;
 
-import java.util.List;
-import java.util.Random;
-
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
@@ -11,7 +8,7 @@ import retrofit2.http.Query;
 public interface ServicioApi {
 
     @GET("character/?")
-    Call<Resultados> getPost(@Query("name") String busqueda, @Query("page") int pagina);
+    Call<Resultados> getPost(@Query("page") int pagina, @Query("name") String busqueda);
 
     @GET("character/")
     Call<Resultados> getTodos(@Query("page") int pagina);
@@ -28,6 +25,17 @@ public interface ServicioApi {
     @GET("episode/?")
     Call<Resultados3> getPostEp(@Query("name") String busqueda, @Query("page") int pagina);
 
+    @GET("character")
+    Call<Resultados> getPersonajesPorFiltro(
+            @Query("species") String especie,
+            @Query("gender") String genero,
+            @Query("status") String estado,
+            @Query("page") int pagina
+    );
+
     @GET("character/{id}")
     Call<Character> getChar(@Path("id") int id);
+
+    @GET("character/{id}")
+    Call<Character> getCharFav(@Path("id") int id);
 }

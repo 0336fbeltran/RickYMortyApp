@@ -72,7 +72,6 @@ public class FinishScreen extends AppCompatActivity {
         puntosActuales.setText(s);
         tvPuntosMax.setText(s);
 
-        CollectionReference users = mFirestore.collection("user");
         CollectionReference puntuaciones = mFirestore.collection("puntuaciones");
         String id = mAuth.getCurrentUser().getUid();
 
@@ -143,11 +142,8 @@ public class FinishScreen extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     for (DocumentSnapshot doc : task.getResult()) {
                         if (Objects.requireNonNull(doc.getData()).containsKey("puntosMax")) {
-                            //maps[0] = doc.getData();
-                            //String idString = doc.getId();
                             int x = doc.getLong("puntosMax").intValue();
                             puntosGenerales.add(x);
-
                         }
                     }
                     puntosGenerales.sort(Comparator.reverseOrder());

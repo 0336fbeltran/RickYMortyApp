@@ -110,10 +110,6 @@ public class ActividadJuego extends AppCompatActivity {
             }.start();
         }
 
-
-
-
-
         btnAlive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -195,7 +191,6 @@ public class ActividadJuego extends AppCompatActivity {
             @Override
             public void onResponse(Call<Character> call, Response<Character> response) {
                 if (response.body() != null) {
-
                     Character personaje = response.body();
                     nombre = personaje.getName();
                     status = personaje.getStatus();
